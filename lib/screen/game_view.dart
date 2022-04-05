@@ -4,8 +4,7 @@ import 'package:numbersgame/cubit/game_cubit.dart';
 import 'package:numbersgame/cubit/game_states.dart';
 
 class GameView extends StatelessWidget {
-  
-  GameView({Key? key}) : super(key: key);
+  const GameView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +14,7 @@ class GameView extends StatelessWidget {
           return GameCubit(InitialState());
         },
         child: BlocConsumer<GameCubit, GameState>(
-            listener: (context, state) {
-              
-            },
+            listener: (context, state) {},
             builder: (context, state) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -29,17 +26,59 @@ class GameView extends StatelessWidget {
                     child: Wrap(
                       children: [
                         giveNumberCircleAvatar(
-                            context: context, number: context.watch<GameCubit>().isVisibleList[0] ? "1" : "", onTap: () {}),
+                            context: context,
+                            number: context.read<GameCubit>().isVisibleList[0]
+                                ? context
+                                    .read<GameCubit>()
+                                    .generatedNumbers[0]
+                                    .toString()
+                                : "",
+                            onTap: () {}),
                         giveNumberCircleAvatar(
-                            context: context, number: context.watch<GameCubit>().isVisibleList[1] ? "2" : "", onTap: () {}),
+                            context: context,
+                            number: context.read<GameCubit>().isVisibleList[1]
+                                ? context
+                                    .read<GameCubit>()
+                                    .generatedNumbers[1]
+                                    .toString()
+                                : "",
+                            onTap: () {}),
                         giveNumberCircleAvatar(
-                            context: context, number: context.watch<GameCubit>().isVisibleList[2] ? "3" : "", onTap: () {}),
+                            context: context,
+                            number: context.read<GameCubit>().isVisibleList[2]
+                                ? context
+                                    .read<GameCubit>()
+                                    .generatedNumbers[2]
+                                    .toString()
+                                : "",
+                            onTap: () {}),
                         giveNumberCircleAvatar(
-                            context: context, number: context.watch<GameCubit>().isVisibleList[3] ? "4" : "", onTap: () {}),
+                            context: context,
+                            number: context.read<GameCubit>().isVisibleList[3]
+                                ? context
+                                    .read<GameCubit>()
+                                    .generatedNumbers[3]
+                                    .toString()
+                                : "",
+                            onTap: () {}),
                         giveNumberCircleAvatar(
-                            context: context, number: context.watch<GameCubit>().isVisibleList[4] ? "5" : "", onTap: () {}),
+                            context: context,
+                            number: context.read<GameCubit>().isVisibleList[4]
+                                ? context
+                                    .read<GameCubit>()
+                                    .generatedNumbers[4]
+                                    .toString()
+                                : "",
+                            onTap: () {}),
                         giveNumberCircleAvatar(
-                            context: context, number: context.watch<GameCubit>().isVisibleList[5] ? "6" : "", onTap: () {}),
+                            context: context,
+                            number: context.read<GameCubit>().isVisibleList[5]
+                                ? context
+                                    .read<GameCubit>()
+                                    .generatedNumbers[5]
+                                    .toString()
+                                : "",
+                            onTap: () {}),
                       ],
                     ),
                   ),
@@ -48,6 +87,7 @@ class GameView extends StatelessWidget {
                     height: MediaQuery.of(context).size.height * 0.1,
                     child: ElevatedButton(
                       onPressed: () {
+                        context.read<GameCubit>().generateNumbers();
                         context.read<GameCubit>().startTimer();
                       },
                       child: Text(
