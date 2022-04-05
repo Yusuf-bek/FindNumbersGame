@@ -1,47 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:numbersgame/cubit/game_cubit.dart';
+import 'package:numbersgame/cubit/game_states.dart';
 
 class GameView extends StatelessWidget {
-  const GameView({Key? key}) : super(key: key);
+  
+  GameView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          giveTimerContainer(context),
-          Center(
-            child: Wrap(
-              children: [
-                giveNumberCircleAvatar(
-                    context: context, number: "1", onTap: () {}),
-                giveNumberCircleAvatar(
-                    context: context, number: "1", onTap: () {}),
-                giveNumberCircleAvatar(
-                    context: context, number: "1", onTap: () {}),
-                giveNumberCircleAvatar(
-                    context: context, number: "1", onTap: () {}),
-                giveNumberCircleAvatar(
-                    context: context, number: "1", onTap: () {}),
-                giveNumberCircleAvatar(
-                    context: context, number: "1", onTap: () {}),
-              ],
-            ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.3,
-            height: MediaQuery.of(context).size.height * 0.1,
-            child: ElevatedButton(
-              onPressed: () {},
-              child: Text(
-                "Generate",
-                style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width * 0.05,
-                ),
-              ),
-            ),
-          ),
-        ],
+      body: BlocProvider(
+        create: (context) {
+          return GameCubit(InitialState());
+        },
+        child: BlocConsumer<GameCubit, GameState>(
+            listener: (context, state) {
+              
+            },
+            builder: (context, state) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  giveTimerContainer(
+                    context,
+                  ),
+                  Center(
+                    child: Wrap(
+                      children: [
+                        giveNumberCircleAvatar(
+                            context: context, number: context.watch<GameCubit>().isVisibleList[0] ? "1" : "", onTap: () {}),
+                        giveNumberCircleAvatar(
+                            context: context, number: context.watch<GameCubit>().isVisibleList[1] ? "2" : "", onTap: () {}),
+                        giveNumberCircleAvatar(
+                            context: context, number: context.watch<GameCubit>().isVisibleList[2] ? "3" : "", onTap: () {}),
+                        giveNumberCircleAvatar(
+                            context: context, number: context.watch<GameCubit>().isVisibleList[3] ? "4" : "", onTap: () {}),
+                        giveNumberCircleAvatar(
+                            context: context, number: context.watch<GameCubit>().isVisibleList[4] ? "5" : "", onTap: () {}),
+                        giveNumberCircleAvatar(
+                            context: context, number: context.watch<GameCubit>().isVisibleList[5] ? "6" : "", onTap: () {}),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        context.read<GameCubit>().startTimer();
+                      },
+                      child: Text(
+                        "Generate",
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width * 0.05,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }),
       ),
     );
   }
@@ -50,10 +69,10 @@ class GameView extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width * 0.3,
       height: MediaQuery.of(context).size.height * 0.2,
-      child: const Center(
+      child: Center(
         child: Text(
-          "1",
-          style: TextStyle(fontSize: 50),
+          context.watch<GameCubit>().timerCounter.toString(),
+          style: const TextStyle(fontSize: 50),
         ),
       ),
       decoration: BoxDecoration(
